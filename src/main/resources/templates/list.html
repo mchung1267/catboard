@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>고양이 커뮤니티, 냥코</title>
+</head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <div th:insert="top.html" id="top"></div>
+        <br>
+        <div class="container" >
+            <h1>게시글 목록</h1>
+            <a th:href="@{/new}" type="button" class="btn btn-primary btn-md">글쓰기</a>
+            <h3> </h3>
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">번호</th>
+                        <th scope="col">작성자</th>
+                        <th scope="col">조회수</th>
+                        <th scope="col">글제목</th>
+                        <th scope="col">작성일</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="post: ${postList}">
+                        <td>
+                            <span th:text="${post.id}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${post.author}"></span>
+                        </td>
+                        <td>
+                            <span th:text="${post.viewcount}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/post/' + ${post.id}}"><span th:text="${post.title}"></span></a>
+                        </td>
+                        <td>
+                            <span th:text="${#temporals.format(post.date, 'yyyy-MM-dd HH:mm')}"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li th:each="pageNum : ${pageList}" th:inline="text" class="page-item">
+                        <a th:href="@{'/list?page=' + ${pageNum}}" class="page-link">[[${pageNum}]]</a>
+                    </li>
+                </ul>
+            </nav>
+            <form action="/search" method="GET">
+                <div class="input-group mb-3 justify-content-center" style="width: 70%">
+                    <select name="category" class="form-select" id="inputGroupSelect01">
+                        <option value="title" selected>제목</option>
+                        <option value="author">작성자</option>
+                    </select>
+                    <input name="keyword" type="text" class="form-control" aria-label="검색어를 입력하세요">
+                    <button class="btn btn-outline-secondary">검색</button>
+                    <a th:href="@{/list}" type="button" class="btn btn-outline-secondary">목록으로</a>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>
